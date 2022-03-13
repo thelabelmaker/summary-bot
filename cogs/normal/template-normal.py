@@ -8,8 +8,10 @@ Version: 4.1
 
 import json
 import os
+from pyexpat.errors import messages
 import sys
 
+import disnake
 from disnake.ext import commands
 from disnake.ext.commands import Context
 
@@ -33,16 +35,21 @@ class Template(commands.Cog, name="template-normal"):
         description="This is a testing command that does nothing.",
     )
     @checks.not_blacklisted()
-    @checks.is_owner()
+    #@checks.is_owner()
     async def testcommand(self, context: Context) -> None:
         """
         This is a testing command that does nothing.
         :param context: The context in which the command has been executed.
         """
         # Do your stuff here
-
+        messages = await context.channel.history(limit=200).flatten()
+        embed = disnake.Embed(
+            description=messages,
+            color=0x9C84EF
+        )
+        print(messages)
         # Don't forget to remove "pass", that's just because there's no content in the method.
-        pass
+        
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
