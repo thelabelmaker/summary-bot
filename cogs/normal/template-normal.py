@@ -31,7 +31,7 @@ class Template(commands.Cog, name="template-normal"):
         self.bot = bot
 
     @commands.command(
-        name="testcommand",
+        name="summ",
         description="This is a testing command that does nothing.",
     )
     @checks.not_blacklisted()
@@ -43,11 +43,21 @@ class Template(commands.Cog, name="template-normal"):
         """
         # Do your stuff here
         messages = await context.channel.history(limit=200).flatten()
-        embed = disnake.Embed(
-            description=messages,
-            color=0x9C84EF
-        )
-        print(messages)
+        
+        for message in messages:
+            try:
+                if message.author != self.bot.user.id:
+                    embed = disnake.Embed(
+                    description=message.content,
+                    color=0x9C84EF
+                    )
+                    await context.send(embed=embed)
+                    print(message.content)
+            except disnake.errors.HTTPException:
+                pass
+            
+            
+            
         # Don't forget to remove "pass", that's just because there's no content in the method.
         
 
